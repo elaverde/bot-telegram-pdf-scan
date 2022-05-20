@@ -1,6 +1,7 @@
 import os
 import subprocess
 import telebot
+import time
 from flask import Flask, request, render_template
 from dotenv import load_dotenv
 load_dotenv()
@@ -38,6 +39,8 @@ def handle_docs_audio(message):
         print(completed)
         bot.send_document(message.chat.id, doc_file)
         #eliminamos los dos archivos ya no son necesarios
+        time.sleep(60)
+        bot.reply_to(message, "Eliminando copias del archivo")
         os.remove(file_name_aux)
         os.remove(new_file)
         #alternativa no utilizada archivo en la nuve

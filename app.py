@@ -10,6 +10,7 @@ bot = telebot.TeleBot(API_TOKEN)
 
 app = Flask(__name__)
 
+
 @app.route('/'+API_TOKEN, methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
@@ -22,7 +23,7 @@ def handle_docs_audio(message):
     file_name = message.document.file_name
     file_name_aux = file_name.replace(" ","_")
     #validando que el archivo sea un pdf
-    if file_name.split('.')[1] == 'pdf':
+    if file_name.lower().endswith('.pdf'):
         file_info = bot.get_file(message.document.file_id)
         downloaded_file = bot.download_file(file_info.file_path)
         #guardamos el archivo
@@ -46,7 +47,7 @@ def handle_docs_audio(message):
         #alternativa no utilizada archivo en la nuve
         #bot.send_document(message.chat.id, 'https://atikegalle.com/uploads/1514125303.pdf')
     else:
-        bot.send_message(message, "El archivo no es un pdf")
+        bot.reply_to(message, "El archivo no es un pdf")
 
 @app.route('/')
 def webhook():
